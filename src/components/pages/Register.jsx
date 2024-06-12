@@ -64,10 +64,8 @@ const Register = () => {
               id="name"
               name="name"
               type="text"
-              // value={formData.name}
               value={name}
               placeholder="Name"
-              // onChange={handleChange}
               onChange={(e) => setName(e.target.value)}
               required
             ></FormInput>
@@ -79,10 +77,8 @@ const Register = () => {
               id="email"
               name="email"
               type="email"
-              // value={formData.email}
               value={email}
               placeholder="Email"
-              // onChange={handleChange}
               onChange={(e) => setEmail(e.target.value)}
               required
             ></FormInput>
@@ -94,10 +90,8 @@ const Register = () => {
               id="password"
               name="password"
               type="password"
-              // value={formData.password}
               value={password}
               placeholder="Password"
-              // onChange={handleChange}
               onChange={(e) => setPassword(e.target.value)}
               required
             ></FormInput>
@@ -113,7 +107,6 @@ const Register = () => {
               className="max-w-xs border text-base px-2.5 py-2 focus:outline-none focus:ring-0 focus:border-blue-600 rounded-lg bg-gray-50 border-gray-300 text-gray-900 w-full"
               id="roles"
               name="roles"
-              // value={formData.roles}
               value={roles}
               placeholder="Pilih Role"
               onChange={(e) => setRoles(e.target.value)}
