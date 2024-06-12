@@ -1,0 +1,14 @@
+[
+    {
+        "label": "Ads",
+        "value" : 32
+    },
+    {
+        "label": "Subs",
+        "value" : 45
+    },
+    {
+        "label": "Sponsor",
+        "value" : 100
+    }
+]
