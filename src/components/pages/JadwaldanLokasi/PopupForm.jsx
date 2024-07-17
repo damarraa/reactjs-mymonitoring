@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import { IoNotificationsOutline, IoRemoveOutline } from "react-icons/io5";
-import { AiOutlineCheckCircle } from "react-icons/ai"; // Import check icon
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import api from "../../../api";
 import { useNavigate } from "react-router-dom";
 
@@ -11,12 +11,41 @@ function PopupForm() {
   const [batas_pemeriksaan, setBatasPemeriksaan] = useState("");
   const [lokasi_feeder, setLokasiFeeder] = useState("");
   const [status, setStatus] = useState("");
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false); // State for notification popup
+  const [lokasiFeederList, setLokasiFeederList] = useState([]);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchLokasiFeeder = async () => {
+      try {
+        const response = await api.get("/api/dataFeeder", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (response.data && Array.isArray(response.data.data)) {
+          setLokasiFeederList(response.data.data);
+        } else {
+          console.error("Unexpected response format:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching lokasi feeder data:", error);
+      }
+    };
+
+    fetchLokasiFeeder();
+  }, []);
+
   const togglePopup = () => {
     setIsOpen(!isOpen);
+  };
+
+  const resetForm = () => {
+    setAwalPemeriksaan("");
+    setBatasPemeriksaan("");
+    setLokasiFeeder("");
+    setStatus("");
   };
 
   const handleSubmit = async (e) => {
@@ -25,39 +54,46 @@ function PopupForm() {
     const data = {
       awal_pemeriksaan,
       batas_pemeriksaan,
-      lokasi_feeder,
+      lokasi_feeder_id: lokasi_feeder, // Pastikan ini adalah ID
       status,
     };
 
+    console.log("Data yang akan dikirim:", data); // Tambahkan ini untuk melihat data yang akan dikirim
+
     try {
-      await api.post("/api/dataJadwal", data);
-      // Show notification popup
+      const response = await api.post("/api/dataJadwal", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("API Response: ", response.data);
       setIsNotificationOpen(true);
+      resetForm(); // Reset form setelah berhasil menambahkan data
       setTimeout(() => {
         setIsNotificationOpen(false);
-        // Redirect after successful submission
         navigate("/JadwaldanLokasi");
-      }, 2000); // Hide notification after 2 seconds
+      }, 2000);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      if (error.response) {
+        console.error("Server Error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network Error:", error.request);
+      } else {
+        console.error("Error:", error.message);
+      }
     }
 
-    // Close the popup after submission
     togglePopup();
   };
 
   return (
     <div>
-      <div className="flex relative mx-4">
-        <FaPlus
-          style={{ color: "#ffffff" }}
-          fontSize={15}
-          className="absolute justify-center top-2.5 left-2"
-        />
+      <div className="flex justify-center md:justify-start mx-4">
         <button
-          className="bg-sky-600 hover:bg-sky-800 text-white text-sm py-2 px-3 pl-7 rounded-sm"
+          className="bg-sky-500 hover:bg-sky-600 text-white text-sm py-2 px-3 rounded-sm ml-auto flex items-center"
           onClick={togglePopup}
         >
+          <FaPlus className="mr-2" />
           Tambah Data
         </button>
       </div>
@@ -94,9 +130,7 @@ function PopupForm() {
                     onChange={(e) => setAwalPemeriksaan(e.target.value)}
                     required
                   />
-
                   <IoRemoveOutline fontSize={40} />
-
                   <input
                     className="w-full border rounded py-2 px-3 mb-3"
                     type="date"
@@ -107,20 +141,26 @@ function PopupForm() {
                     required
                   />
                 </div>
-
                 <label className="block mb-2" htmlFor="lokasi_feeder">
                   Lokasi Pemeriksaan
                 </label>
-                <input
+                <select
                   className="w-full border rounded py-2 px-3 mb-3 font-light"
-                  type="text"
                   id="lokasi_feeder"
                   name="lokasi_feeder"
                   value={lokasi_feeder}
                   onChange={(e) => setLokasiFeeder(e.target.value)}
                   required
-                />
-
+                >
+                  <option value="" disabled hidden>
+                    Pilih Lokasi Feeder
+                  </option>
+                  {lokasiFeederList.map((feeder) => (
+                    <option key={feeder.id} value={feeder.id}>
+                      {feeder.lokasi_feeder}
+                    </option>
+                  ))}
+                </select>
                 <label className="block mb-2" htmlFor="status">
                   Status Pemeriksaan
                 </label>
@@ -139,8 +179,7 @@ function PopupForm() {
                   <option value="Closed">Closed</option>
                 </select>
               </div>
-
-              <div className="flex mt-3 ml-3 relative left-3/4 gap-3">
+              <div className="flex mt-3 justify-end gap-3">
                 <button
                   className="bg-white hover:bg-neutral-200 border border-neutral-200 text-neutral-600 text-sm py-2 px-4 rounded"
                   type="button"
@@ -149,7 +188,7 @@ function PopupForm() {
                   Tutup
                 </button>
                 <button
-                  className="bg-sky-600 hover:bg-sky-700 text-white text-sm py-2 px-4 rounded"
+                  className="bg-sky-500 hover:bg-sky-600 text-white text-sm py-2 px-4 rounded"
                   type="submit"
                 >
                   Simpan
@@ -159,13 +198,15 @@ function PopupForm() {
           </div>
         </div>
       )}
-
       {isNotificationOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="absolute bg-gray-900 opacity-60 inset-0"></div>
-          <div className="z-50 bg-white rounded-sm p-4 flex items-center space-x-2">
-            <AiOutlineCheckCircle fontSize={40} className="text-green-500" />
-            <p className="text-base font-bold">Berhasil menyimpan!</p>
+          <div className="z-50 bg-white rounded-md p-8 max-w-md w-full flex flex-col items-center">
+            <AiOutlineCheckCircle
+              fontSize={80}
+              className="text-green-500 animate-check"
+            />
+            <p className="text-lg font-bold mt-4">Data berhasil disimpan!</p>
           </div>
         </div>
       )}

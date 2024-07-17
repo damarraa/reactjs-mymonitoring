@@ -1,8 +1,16 @@
 import { Outlet } from "react-router-dom"
 import Sidebar from "./Sidebar"
 import Header from "./Header"
+import { useEffect } from "react";
 
 const Layout = () => {
+  useEffect(() => {
+    const accessToken = localStorage.getItem('token');
+    if (!accessToken) {
+        window.location.href = '/login';
+      }
+    }, []);
+
   return (
     <div className="bg-neutral-100 h-screen w-screen overflow-hidden flex flex-row">
 			<Sidebar />

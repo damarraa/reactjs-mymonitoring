@@ -3,8 +3,17 @@ import Input from "../elements/Input";
 import Label from "../elements/Label";
 
 const FormInput = (props) => {
-  const { judul, type, placeholder, value, onChange, required, options } = props;
-
+  const {
+    judul,
+    type,
+    placeholder,
+    value,
+    onChange,
+    required,
+    options,
+    id,
+    name,
+  } = props;
   // Jika tipe input adalah dropdown, kita akan menampilkan opsi dropdown
   if (type === "dropdown") {
     return (
@@ -16,10 +25,14 @@ const FormInput = (props) => {
           onChange={onChange} // Handler ketika nilai dropdown berubah
           required={required}
         >
-          <option value="" disabled hidden>{placeholder}</option>
+          <option value="" disabled hidden>
+            {placeholder}
+          </option>
           {/* Loop melalui setiap opsi dan buat elemen option */}
           {options.map((option, index) => (
-            <option key={index} value={option}>{option}</option>
+            <option key={index} value={option}>
+              {option}
+            </option>
           ))}
         </select>
       </div>
@@ -30,7 +43,14 @@ const FormInput = (props) => {
   return (
     <div className="">
       <Label judul={judul}></Label>
-      <Input type={type} value={value} placeholder={placeholder} onChange={onChange}></Input>
+      <Input
+        type={type}
+        id={id}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+      ></Input>
     </div>
   );
 };

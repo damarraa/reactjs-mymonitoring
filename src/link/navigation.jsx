@@ -1,21 +1,21 @@
 import {
 	HiOutlineViewGrid,
-	HiOutlineCog,
-	HiOutlineLogout
 } from 'react-icons/hi'
 
 import{TbCalendarTime} from 'react-icons/tb'
 import{
 	LuFileCheck2,
-	LuFileCog
+	LuFileCog,
+	LuFileSearch,
+	LuUtilityPole
 } from 'react-icons/lu'
-import { key } from 'localforage'
+import { FaUserCog } from 'react-icons/fa'
 
 export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'dashboard',
 		label: 'Dashboard',
-		path: '/',
+		path: '/Dashboard',
 		icon: <HiOutlineViewGrid />
 	},
 	{
@@ -27,35 +27,38 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'lpemeriksaan',
 		label: 'Data Laporan Pemeriksaan',
-		path: '/LPemeriksaan',
+		path: '/LaporanPemeriksaan',
 		icon: <LuFileCheck2 />
 	},
 	{
 		key: 'temuan_pemeriksaan',
-		label: 'Data Temuan',
+		label: 'Data Laporan Temuan',
 		path: '/TemuanPemeriksaan',
-		icon: <LuFileCog />
+		icon: <LuFileSearch />
 	},
 	{
 		key: 'lperbaikan_maintenance',
 		label: 'Data Laporan Perbaikan ',
-		path: '/LPerbaikanMTC',
+		path: '/LaporanPerbaikan',
 		icon: <LuFileCog />
+	},
+	{
+		key: 'datafeeder',
+		label: 'Manajemen Feeder',
+		path: '/DataFeeder',
+		icon: <LuUtilityPole />
+	},
+	{
+		key: 'manajemen_user',
+		label: 'Manajemen User',
+		path: '/ManajemenUser',
+		icon: <FaUserCog />
 	}
 ]
 
 export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
 	{
-		key: 'pengaturan',
-		label: 'Pengaturan',
-		path: '/Pengaturan',
-		icon: <HiOutlineCog />
-	},
-	{
-		key: 'login',
-		label: 'Log Out',
-		path: '/Login',
-		icon: <HiOutlineLogout />
+		
 	},
 ]
 

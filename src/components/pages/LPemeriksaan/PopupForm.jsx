@@ -44,7 +44,7 @@ function PopupForm() {
             fontSize={15} 
             className='absolute justify-center top-2.5 left-2'> 
             </FaPlus>
-            <button className="bg-blue hover:bg-sky-600 text-white text-sm py-2 px-3 pl-7 rounded-sm" onClick={togglePopup}>Tambah Data</button>
+            <button className="bg-blue hover:bg-sky-500 text-white text-sm py-2 px-3 pl-7 rounded-sm" onClick={togglePopup}>Tambah Data</button>
         </div>
       {isOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">

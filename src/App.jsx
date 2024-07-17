@@ -9,19 +9,25 @@ import JadwaldanLokasi from "./components/pages/JadwaldanLokasi/JadwaldanLokasi"
 import Pengaturan from "./components/pages/Pengaturan/Pengaturan"
 import TemuanPemeriksaan from "./components/pages/TemuanPemeriksaan/TemuanPemeriksaan"
 import Register from "./components/pages/Register"
+import ManajemenUser from "./components/pages/ManajamenUser/ManajemenUser"
+import DataFeeder from "./components/pages/DataFeeder/DataFeeder"
+import PoleDetail from "./components/pages/DataFeeder/PoleDetail"
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Layout/>}>
-          <Route index element={<Dashboard/>}/>
+          <Route index path="Dashboard" element={<Dashboard/>}/>
           <Route path="JadwaldanLokasi" element={<JadwaldanLokasi/>}/>
-          <Route path="LPemeriksaan" element={<LPemeriksaan/>} />
+          <Route path="LaporanPemeriksaan" element={<LPemeriksaan/>} />
           <Route path="TemuanPemeriksaan" element={<TemuanPemeriksaan></TemuanPemeriksaan>} />
-          <Route path="LPerbaikanMTC" element={<LPerbaikanMTC/>} />
+          <Route path="LaporanPerbaikan" element={<LPerbaikanMTC/>} />
           <Route path="LPermohonanPbb" element={<LPermohonanPbb/>} />
           <Route path="Pengaturan" element={<Pengaturan/>} />
+          <Route path="DataFeeder" element={<DataFeeder></DataFeeder>}/>
+          <Route path="ManajemenUser" element={<ManajemenUser/>} />
+          <Route path="DataFeeder/feeder/:feederId" element={<PoleDetail />} /> {/* Tambahkan rute ini */}
         </Route>
         <Route path="Login" element={<Login></Login>}></Route>
         <Route path="Register" element={<Register></Register>}></Route>
